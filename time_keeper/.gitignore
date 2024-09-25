@@ -9,7 +9,8 @@ web/
 windows/
 .metadata
 analysis_options.yaml
-
+cloc-2.02.exe
+cloc_comand.txt
 
 # Miscellaneous
 *.class
