@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -38,10 +45,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _message = '';
 
-  void _submitTask() {
-    setState(() {
-      _message = 'Task submitted: ${_taskController.text} from ${_fromController.text} to ${_toController.text} on ${_dateController.text} with tag ${_tagController.text}.';
-    });
+  Future<void> _submitTask() async {
+    try {
+      // Create a new document with a unique ID
+      DocumentReference newTaskRef = FirebaseFirestore.instance.collection('tasks').doc();
+
+      // Use the generated document ID to set data
+      await newTaskRef.set({
+        'date': _dateController.text,
+        'from': _fromController.text,
+        'to': _toController.text,
+        'task': _taskController.text,
+        'tag': _tagController.text,
+      });
+
+      setState(() {
+        _message = 'Task submitted: ${_taskController.text} from ${_fromController.text} to ${_toController.text} on ${_dateController.text} with tag ${_tagController.text}.';
+      });
+    } catch (e) {
+      setState(() {
+        _message = 'Error: $e';
+      });
+    }
   }
 
   @override
