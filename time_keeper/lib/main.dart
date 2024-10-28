@@ -66,6 +66,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> _deleteTask(String taskId) async {
+    try {
+      await FirebaseFirestore.instance.collection('tasks').doc(taskId).delete();
+      setState(() {
+        _message = 'Task deleted successfully.';
+      });
+    } catch (e) {
+      setState(() {
+        _message = 'Error deleting task: $e';
+      });
+    }
+  }
+
   Future<void> _showAllTasks() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('tasks').get();
@@ -80,9 +93,19 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListBody(
                 children: tasks.map((task) {
                   Map<String, dynamic> data = task.data() as Map<String, dynamic>;
+                  String taskId = task.id;
+
                   return ListTile(
                     title: Text(data['task'] ?? 'No Task Name'),
                     subtitle: Text('${data['date']} from ${data['from']} to ${data['to']} with tag ${data['tag']}'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        _deleteTask(taskId);
+                        Navigator.of(context).pop(); // Close the dialog after deletion
+                        _showAllTasks(); // Refresh the task list
+                      },
+                    ),
                   );
                 }).toList(),
               ),
