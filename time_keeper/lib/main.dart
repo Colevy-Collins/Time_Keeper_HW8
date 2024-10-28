@@ -14,7 +14,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +29,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-    final String title;
+  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -47,10 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _submitTask() async {
     try {
-      // Create a new document with a unique ID
       DocumentReference newTaskRef = FirebaseFirestore.instance.collection('tasks').doc();
 
-      // Use the generated document ID to set data
       await newTaskRef.set({
         'date': _dateController.text,
         'from': _fromController.text,
@@ -65,6 +62,45 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       setState(() {
         _message = 'Error: $e';
+      });
+    }
+  }
+
+  Future<void> _showAllTasks() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('tasks').get();
+      List<QueryDocumentSnapshot> tasks = querySnapshot.docs;
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('All Tasks'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: tasks.map((task) {
+                  Map<String, dynamic> data = task.data() as Map<String, dynamic>;
+                  return ListTile(
+                    title: Text(data['task'] ?? 'No Task Name'),
+                    subtitle: Text('${data['date']} from ${data['from']} to ${data['to']} with tag ${data['tag']}'),
+                  );
+                }).toList(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      setState(() {
+        _message = 'Error retrieving tasks: $e';
       });
     }
   }
@@ -133,6 +169,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
               child: Text('Add Task'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _showAllTasks,
+              child: Text('Show All Tasks'),
             ),
             SizedBox(height: 20),
             Text(_message),
