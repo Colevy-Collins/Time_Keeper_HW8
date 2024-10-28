@@ -79,6 +79,87 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> _editTask(String taskId, Map<String, dynamic> data) async {
+    // Pre-fill the controllers with current values
+    _dateController.text = data['date'];
+    _fromController.text = data['from'];
+    _toController.text = data['to'];
+    _taskController.text = data['task'];
+    _tagController.text = data['tag'];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Task'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  controller: _dateController,
+                  decoration: InputDecoration(labelText: 'Date'),
+                ),
+                TextField(
+                  controller: _fromController,
+                  decoration: InputDecoration(labelText: 'From'),
+                ),
+                TextField(
+                  controller: _toController,
+                  decoration: InputDecoration(labelText: 'To'),
+                ),
+                TextField(
+                  controller: _taskController,
+                  decoration: InputDecoration(labelText: 'Task'),
+                ),
+                TextField(
+                  controller: _tagController,
+                  decoration: InputDecoration(labelText: 'Tag'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await FirebaseFirestore.instance.collection('tasks').doc(taskId).update({
+                    'date': _dateController.text,
+                    'from': _fromController.text,
+                    'to': _toController.text,
+                    'task': _taskController.text,
+                    'tag': _tagController.text,
+                  });
+                  setState(() {
+                    _message = 'Task updated successfully.';
+                  });
+                } catch (e) {
+                  setState(() {
+                    _message = 'Error updating task: $e';
+                  });
+                }
+
+                Navigator.of(context).pop(); // Close the edit dialog
+
+                // Close the previous dialog before showing the updated tasks
+                Navigator.of(context).pop(); // This closes the task list dialog if it's still open
+
+                // Show the updated task list
+                _showAllTasks(); // Refresh the task list
+              },
+              child: Text('Update Task'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _showAllTasks() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('tasks').get();
@@ -89,25 +170,39 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('All Tasks'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: tasks.map((task) {
-                  Map<String, dynamic> data = task.data() as Map<String, dynamic>;
-                  String taskId = task.id;
+            content: Container(
+              width: 400, // Set the width you want here
+              child: SingleChildScrollView(
+                child: ListBody(
+                  children: tasks.map((task) {
+                    Map<String, dynamic> data = task.data() as Map<String, dynamic>;
+                    String taskId = task.id;
 
-                  return ListTile(
-                    title: Text(data['task'] ?? 'No Task Name'),
-                    subtitle: Text('${data['date']} from ${data['from']} to ${data['to']} with tag ${data['tag']}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        _deleteTask(taskId);
-                        Navigator.of(context).pop(); // Close the dialog after deletion
-                        _showAllTasks(); // Refresh the task list
-                      },
-                    ),
-                  );
-                }).toList(),
+                    return ListTile(
+                      title: Text(data['task'] ?? 'No Task Name'),
+                      subtitle: Text('${data['date']} from ${data['from']} to ${data['to']} with tag ${data['tag']}'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () {
+                              _editTask(taskId, data);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              _deleteTask(taskId);
+                              Navigator.of(context).pop(); // Close the dialog after deletion
+                              _showAllTasks(); // Refresh the task list
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
             actions: [
