@@ -41,9 +41,72 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _toController = TextEditingController();
   final TextEditingController _taskController = TextEditingController();
   final TextEditingController _tagController = TextEditingController();
+  final TextEditingController _searchDateController = TextEditingController();
+  final TextEditingController _searchTagController = TextEditingController();
+  final TextEditingController _searchTaskController = TextEditingController();
 
   String _message = '';
 
+  Future<void> _searchTasks() async {
+    try {
+      Query query = FirebaseFirestore.instance.collection('tasks');
+
+      // Add conditions based on input values
+      if (_searchDateController.text.isNotEmpty) {
+        query = query.where('date', isEqualTo: _searchDateController.text);
+      }
+
+      if (_searchTagController.text.isNotEmpty) {
+        // Split the tags by comma and trim any extra whitespace
+        List<String> tags = _searchTagController.text
+            .split(',')
+            .map((tag) => tag.trim())
+            .toList();
+        query = query.where('tag', whereIn: tags);
+      }
+
+      if (_searchTaskController.text.isNotEmpty) {
+        query = query.where('task', isEqualTo: _searchTaskController.text);
+      }
+
+      QuerySnapshot querySnapshot = await query.get();
+      List<QueryDocumentSnapshot> tasks = querySnapshot.docs;
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Search Results'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: tasks.map((task) {
+                  Map<String, dynamic> data = task.data() as Map<String, dynamic>;
+                  return ListTile(
+                    title: Text(data['task'] ?? 'No Task Name'),
+                    subtitle: Text(
+                      '${data['date']} from ${data['from']} to ${data['to']} with tag ${data['tag']}',
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      setState(() {
+        _message = 'Error searching tasks: $e';
+      });
+    }
+  }
   Future<void> _submitTask() async {
     try {
       DocumentReference newTaskRef = FirebaseFirestore.instance.collection('tasks').doc();
@@ -292,6 +355,53 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: _showAllTasks,
               child: Text('Show All Tasks'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Search Tasks'),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _searchDateController,
+                              decoration: InputDecoration(labelText: 'Date'),
+                            ),
+                            TextField(
+                              controller: _searchTagController,
+                              decoration: InputDecoration(labelText: 'Tag'),
+                            ),
+                            TextField(
+                              controller: _searchTaskController,
+                              decoration: InputDecoration(labelText: 'Task'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Cancel'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _searchTasks(); // Call the search function
+                          },
+                          child: Text('Search'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text('Search Tasks'),
             ),
             SizedBox(height: 20),
             Text(_message),
