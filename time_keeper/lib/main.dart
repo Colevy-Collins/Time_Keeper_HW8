@@ -649,12 +649,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               decoration: InputDecoration(labelText: 'Date'),
                             ),
                             TextField(
-                              controller: _searchTagController,
-                              decoration: InputDecoration(labelText: 'Tag'),
-                            ),
-                            TextField(
                               controller: _searchTaskController,
                               decoration: InputDecoration(labelText: 'Task'),
+                            ),
+                            TextField(
+                              controller: _searchTagController,
+                              decoration: InputDecoration(labelText: 'Tag'),
                             ),
                           ],
                         ),
@@ -681,7 +681,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('Search Tasks'),
             ),
             SizedBox(height: 20),
-            Text(_message),
+            Text(_message, key: const Key('message')),
           ],
         ),
       ),

@@ -35,14 +35,14 @@ void main() async {
       await expectLater(find.text('Submit Task'), findsOneWidget);
 
       // Enter task details in the dialog.
-      await tester.enterText(find.byType(TextField).at(0), 'today');
+      await tester.enterText(find.byType(TextField).at(0), '2024/11/11');
       await tester.enterText(find.byType(TextField).at(1), '10:00');
       await tester.enterText(find.byType(TextField).at(2), '11:00');
       await tester.enterText(find.byType(TextField).at(3), 'Test Task');
       await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
 
       // Verify that the task details are entered.
-      await expectLater(find.text('today'), findsOneWidget);
+      await expectLater(find.text('2024/11/11'), findsOneWidget);
       await expectLater(find.text('10:00'), findsOneWidget);
       await expectLater(find.text('11:00'), findsOneWidget);
       await expectLater(find.text('Test Task'), findsOneWidget);
@@ -52,11 +52,6 @@ void main() async {
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
 
-      // Verify that the message text widget has the right text.
-      //await expectLater(find.text(
-          //'Task submitted: Test Task from 10:00 to 11:00 on today with tag Test Tag.'),
-          //findsOneWidget);
-
       // Verify that the dialog is closed.
       await expectLater(find.text('Submit Task'), findsNothing);
 
@@ -65,7 +60,68 @@ void main() async {
       await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
-      //await expectLater(find.byWidgetPredicate((widget) => widget is Text && widget.data == 'Test Task'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsOneWidget);
+
+      // Tap the 'Edit Task' button and trigger a frame.
+      // Find the ListTile containing the task title 'Test Task'
+      final taskTile = find.widgetWithText(ListTile, 'Test Task');
+
+      // Ensure the ListTile is found
+      await expectLater(taskTile, findsOneWidget);
+
+      // Find the edit button within the ListTile
+      final editButton = await find.descendant(
+        of: taskTile,
+        matching: find.byIcon(Icons.edit),
+      );
+
+      // Ensure the edit button is found
+      await expectLater(editButton, findsOneWidget);
+
+      // Tap the edit button
+      await tester.tap(editButton);
+      await tester.pumpAndSettle();
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/12/12');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task Updated');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag Updated');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/12/12'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task Updated'), findsOneWidget);
+      await expectLater(find.text('Test Tag Updated'), findsOneWidget);
+
+      // Update the task.
+      await tester.tap(find.text('Update Task'));
+      await tester.pumpAndSettle();
+
+      // Tap the 'Delete Task' button and trigger a frame.
+      // Find the ListTile containing the task title 'Test Task'
+      final taskTile2 = await find.widgetWithText(ListTile, 'Test Task Updated');
+
+      // Ensure the ListTile is found
+      await expectLater(taskTile2, findsOneWidget);
+
+      // Find the edit button within the ListTile
+      final deleteButton = await find.descendant(
+        of: taskTile2,
+        matching: find.byIcon(Icons.delete),
+      );
+
+      // Ensure the edit button is found
+      await expectLater(deleteButton, findsOneWidget);
+
+      await tester.tap(deleteButton);
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test Task Update'), findsNothing);
+
     });
   });
 }
