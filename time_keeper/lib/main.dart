@@ -150,10 +150,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
       setState(() {
         _message = 'Task submitted: ${_taskController.text} from ${_fromController.text} to ${_toController.text} on ${_dateController.text} with tag ${_tagController.text}.';
+        print(_message);
       });
     } catch (e) {
       setState(() {
         _message = 'Error: $e';
+        print(_message);
       });
     }
   }
@@ -163,10 +165,12 @@ class _MyHomePageState extends State<MyHomePage> {
       await FirebaseFirestore.instance.collection('tasks').doc(taskId).delete();
       setState(() {
         _message = 'Task deleted successfully.';
+        print(_message);
       });
     } catch (e) {
       setState(() {
         _message = 'Error deleting task: $e';
+        print(_message);
       });
     }
   }
@@ -325,10 +329,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                   setState(() {
                     _message = 'Task updated successfully.';
+                    print(_message);
                   });
                 } catch (e) {
                   setState(() {
                     _message = 'Error updating task: $e';
+                    print(_message);
                   });
                 }
 
@@ -408,6 +414,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       setState(() {
         _message = 'Error retrieving tasks: $e';
+        print(_message);
       });
     }
   }
@@ -469,6 +476,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       setState(() {
         _message = 'Error searching tasks: $e';
+        print(_message);
       });
     }
   }
@@ -611,7 +619,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             _submitTask();
                             Navigator.of(context).pop();
                           },
-                          child: Text('Add Task'),
+                          child: Text('Submit Task'),
                         ),
                       ],
                     );
