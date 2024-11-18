@@ -23,7 +23,7 @@ void main() async {
 
   group('end-to-end test', ()
   {
-    testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    testWidgets('end-to-end test', (WidgetTester tester) async {
       // Build our app and trigger a frame.
       await tester.pumpWidget(const MyApp());
 
@@ -122,6 +122,266 @@ void main() async {
       // Verify that the task is displayed in the list.
       await expectLater(find.text('Test Task Update'), findsNothing);
 
+      ////////////////////////////////////////////////////////////
+      // Add a task with today as the date
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), 'today');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task Today');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag Today');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('today'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task Today'), findsOneWidget);
+      await expectLater(find.text('Test Tag Today'), findsOneWidget);
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is closed.
+      await expectLater(find.text('Submit Task'), findsNothing);
+
+      // Verify that the task is in the database.
+      await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test Task Today'), findsOneWidget);
+
+      // Delete the task
+      // Find the ListTile containing the task title 'Test Task Today'
+      final taskTile3 = await find.widgetWithText(ListTile, 'Test Task Today');
+
+      // Ensure the ListTile is found
+      await expectLater(taskTile3, findsOneWidget);
+
+      // Find the delete button within the ListTile
+      final deleteButton2 = await find.descendant(
+        of: taskTile3,
+        matching: find.byIcon(Icons.delete),
+      );
+
+      // Ensure the delete button is found
+      await expectLater(deleteButton2, findsOneWidget);
+
+      await tester.tap(deleteButton2);
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test Task Today'), findsNothing);
+
+      /////////////////////////////////////////////////
+      //test data constaints for date and time
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024-11-11');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '09:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is closed.
+      await expectLater(find.text('Submit Task'), findsNothing);
+
+      // Verify that the task is in the database.
+      await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test Task'), findsNothing);
+
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024-11-11');
+      await tester.enterText(find.byType(TextField).at(1), 'a');
+      await tester.enterText(find.byType(TextField).at(2), '09:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is closed.
+      await expectLater(find.text('Submit Task'), findsNothing);
+
+      // Verify that the task is in the database.
+      await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test Task'), findsNothing);
+
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024-11-11');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), 'a');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is closed.
+      await expectLater(find.text('Submit Task'), findsNothing);
+
+      // Verify that the task is in the database.
+      await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test Task'), findsNothing);
+
+      /////////////////////////////////////////////////
+      //test search functionality
+
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/11/11');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test 1');
+      await tester.enterText(find.byType(TextField).at(4), 'Test 1');
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/11/11');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test 2');
+      await tester.enterText(find.byType(TextField).at(4), 'Test 2');
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+
+      // tap the search button
+      await tester.tap(find.text('Search Tasks'));
+      await tester.pumpAndSettle();
+
+      // Enter search details in the dialog.
+      await tester.enterText(find.byType(TextField).at(2), 'Test 1, Test 2');
+
+      // Submit the search.
+      await tester.tap(find.text('Search'));
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test 1'), findsOneWidget);
+      await expectLater(find.text('Test 2'), findsOneWidget);
+
+      //Delete the tasks
+      // Find the ListTile containing the task title 'Test Task'
+
+      // Close search
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+
+      // Find the ListTile containing the task title 'Test Task'
+      await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+
+      final taskTile4 = await find.widgetWithText(ListTile, 'Test 1');
+
+      // Ensure the ListTile is found
+      await expectLater(taskTile4, findsOneWidget);
+
+      // Find the delete button within the ListTile
+      await tester.pumpAndSettle();
+      final deleteButton3 = await find.descendant(
+        of: taskTile4,
+        matching: find.byIcon(Icons.delete),
+      );
+
+      // Ensure the delete button is found
+      await expectLater(deleteButton3, findsOneWidget);
+
+      await tester.tap(deleteButton3);
+      await tester.pumpAndSettle();
+
+      // Find the ListTile containing the task title 'Test Task2'
+      final taskTile5 = await find.widgetWithText(ListTile, 'Test 2');
+
+      // Ensure the ListTile is found
+      await expectLater(taskTile5, findsOneWidget);
+
+      // Find the delete button within the ListTile
+      final deleteButton4 = await find.descendant(
+        of: taskTile5,
+        matching: find.byIcon(Icons.delete),
+      );
+
+      // Ensure the delete button is found
+      await expectLater(deleteButton4, findsOneWidget);
+
+      await tester.tap(deleteButton4);
+      await tester.pumpAndSettle();
+
+      // Verify that the task is displayed in the list.
+      await expectLater(find.text('Test 1'), findsNothing);
+      await expectLater(find.text('Test 2'), findsNothing);
+
     });
   });
+
 }
