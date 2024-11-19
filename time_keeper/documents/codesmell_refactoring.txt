@@ -1,0 +1,14 @@
+Code Smell 1: _MyHomePageState is a God class.
+    Refactoring: Extract the validator class.
+Code Smell 2: _MyHomePageState is a long class.
+    Refactoring: Extract the converter class.
+Code Smell 3: _MyHomePageState is a has duplicate code and is a complex class.
+    Refactoring: Extract a AlertDialog class.
+Code Smell 4: Build is a long method.
+    Refactoring: Extract all AlertDialogs.
+Code Smell 5: Duplicate code used to display results
+    Refactoring: Extract a Result class.
+Code Smell 6: _MyHomePageState is a long class.
+    Refactoring: Extract the db functions class.
+Code Smell 7: Duplicate code used to get results
+    Refactoring: consolidate code.

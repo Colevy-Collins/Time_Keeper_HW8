@@ -97,7 +97,11 @@ void main() async {
       await expectLater(find.text('Test Tag Updated'), findsOneWidget);
 
       // Update the task.
-      await tester.tap(find.text('Update Task'));
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+
+      // Verify that the task is in the database.
+      await tester.tap(find.text('Show All Tasks'));
       await tester.pumpAndSettle();
 
       // Tap the 'Delete Task' button and trigger a frame.
@@ -124,8 +128,6 @@ void main() async {
 
       ////////////////////////////////////////////////////////////
       // Add a task with today as the date
-      await tester.tap(find.text('Close'));
-      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Add Task'));
       await tester.pumpAndSettle();
@@ -185,8 +187,6 @@ void main() async {
 
       /////////////////////////////////////////////////
       //test data constaints for date and time
-      await tester.tap(find.text('Close'));
-      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Add Task'));
       await tester.pumpAndSettle();
@@ -250,6 +250,7 @@ void main() async {
 
       await tester.tap(find.text('Add Task'));
       await tester.pumpAndSettle();
+
 
       // Verify that the dialog is displayed.
       await expectLater(find.text('Submit Task'), findsOneWidget);
@@ -332,8 +333,6 @@ void main() async {
 
       //Delete the tasks
       // Find the ListTile containing the task title 'Test Task'
-
-      // Close search
       await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
 
@@ -359,6 +358,9 @@ void main() async {
       await tester.tap(deleteButton3);
       await tester.pumpAndSettle();
 
+      await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+
       // Find the ListTile containing the task title 'Test Task2'
       final taskTile5 = await find.widgetWithText(ListTile, 'Test 2');
 
@@ -380,6 +382,7 @@ void main() async {
       // Verify that the task is displayed in the list.
       await expectLater(find.text('Test 1'), findsNothing);
       await expectLater(find.text('Test 2'), findsNothing);
+
 
     });
   });
