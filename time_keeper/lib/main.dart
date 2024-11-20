@@ -94,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
         print(_message);
       });
     }
+    Navigator.of(context).pop();
   }
 
   Future<void> _showSubmitBox() async {
@@ -193,22 +194,21 @@ class _MyHomePageState extends State<MyHomePage> {
     QuerySnapshot querySnapshot = await query.get();
     List<QueryDocumentSnapshot> tasks = querySnapshot.docs;
 
-    try{
+    try {
       var results = ResultsPopup();
-      setState(() {
-        results.show(context, tasks);
+      results.show(context, tasks).then((message) {
+        setState(() {
+          _message = message;
+          print(_message);
+        });
       });
-      setState(() {
-        _message = results.message;
-        print(_message);
-      });
-    }
-    catch (e) {
+    } catch (e) {
       setState(() {
         _message = 'Error: $e';
         print(_message);
       });
     }
+
 
 
   } catch (e) {

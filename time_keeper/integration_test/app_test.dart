@@ -30,6 +30,8 @@ void main() async {
       // Tap the 'Add Task' button and trigger a frame.
       await tester.tap(find.text('Add Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the dialog is displayed.
       await expectLater(find.text('Submit Task'), findsOneWidget);
@@ -51,12 +53,16 @@ void main() async {
       // Submit the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the dialog is closed.
       await expectLater(find.text('Submit Task'), findsNothing);
 
       // Verify that the task is in the database.
       await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
@@ -81,6 +87,8 @@ void main() async {
       // Tap the edit button
       await tester.tap(editButton);
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Enter task details in the dialog.
       await tester.enterText(find.byType(TextField).at(0), '2024/12/12');
@@ -99,9 +107,14 @@ void main() async {
       // Update the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
 
       // Verify that the task is in the database.
       await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Tap the 'Delete Task' button and trigger a frame.
@@ -122,6 +135,8 @@ void main() async {
 
       await tester.tap(deleteButton);
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
       await expectLater(find.text('Test Task Update'), findsNothing);
@@ -130,6 +145,8 @@ void main() async {
       // Add a task with today as the date
 
       await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the dialog is displayed.
@@ -152,12 +169,16 @@ void main() async {
       // Submit the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the dialog is closed.
       await expectLater(find.text('Submit Task'), findsNothing);
 
       // Verify that the task is in the database.
       await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
@@ -181,6 +202,8 @@ void main() async {
 
       await tester.tap(deleteButton2);
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
       await expectLater(find.text('Test Task Today'), findsNothing);
@@ -189,6 +212,8 @@ void main() async {
       //test data constaints for date and time
 
       await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the dialog is displayed.
@@ -204,6 +229,8 @@ void main() async {
       // Submit the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the dialog is closed.
       await expectLater(find.text('Submit Task'), findsNothing);
@@ -211,14 +238,20 @@ void main() async {
       // Verify that the task is in the database.
       await tester.tap(find.text('Show All Tasks'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
       await expectLater(find.text('Test Task'), findsNothing);
 
       await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the dialog is displayed.
@@ -234,6 +267,8 @@ void main() async {
       // Submit the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the dialog is closed.
       await expectLater(find.text('Submit Task'), findsNothing);
@@ -241,14 +276,20 @@ void main() async {
       // Verify that the task is in the database.
       await tester.tap(find.text('Show All Tasks'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
       await expectLater(find.text('Test Task'), findsNothing);
 
       await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
 
@@ -265,12 +306,16 @@ void main() async {
       // Submit the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Verify that the dialog is closed.
       await expectLater(find.text('Submit Task'), findsNothing);
 
       // Verify that the task is in the database.
       await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
@@ -281,8 +326,12 @@ void main() async {
 
       await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the dialog is displayed.
@@ -298,8 +347,12 @@ void main() async {
       // Submit the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the dialog is displayed.
@@ -315,9 +368,13 @@ void main() async {
       // Submit the task.
       await tester.tap(find.text('Submit Task'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // tap the search button
       await tester.tap(find.text('Search Tasks'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Enter search details in the dialog.
@@ -325,6 +382,8 @@ void main() async {
 
       // Submit the search.
       await tester.tap(find.text('Search'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.
@@ -335,9 +394,13 @@ void main() async {
       // Find the ListTile containing the task title 'Test Task'
       await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       // Find the ListTile containing the task title 'Test Task'
       await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       final taskTile4 = await find.widgetWithText(ListTile, 'Test 1');
@@ -346,6 +409,8 @@ void main() async {
       await expectLater(taskTile4, findsOneWidget);
 
       // Find the delete button within the ListTile
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
       final deleteButton3 = await find.descendant(
         of: taskTile4,
@@ -357,8 +422,12 @@ void main() async {
 
       await tester.tap(deleteButton3);
       await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Show All Tasks'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Find the ListTile containing the task title 'Test Task2'
@@ -377,6 +446,8 @@ void main() async {
       await expectLater(deleteButton4, findsOneWidget);
 
       await tester.tap(deleteButton4);
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
       // Verify that the task is displayed in the list.

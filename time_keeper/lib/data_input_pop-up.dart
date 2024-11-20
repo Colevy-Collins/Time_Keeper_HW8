@@ -153,7 +153,6 @@ Function _submitTask;
         ElevatedButton(
           onPressed: () {
             _submitTask();
-            Navigator.of(context).pop();
           },
           child: Text('Submit Task'),
         ),
