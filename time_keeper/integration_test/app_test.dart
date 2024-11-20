@@ -43,6 +43,22 @@ void main() async {
       await tester.enterText(find.byType(TextField).at(3), 'Test Task');
       await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
 
+      // Select AM/PM
+      await tester.tap(find.byType(Radio<bool>).at(1));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(Radio<String>).at(1));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(Radio<String>).at(3));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
       // Verify that the task details are entered.
       await expectLater(find.text('2024/11/11'), findsOneWidget);
       await expectLater(find.text('10:00'), findsOneWidget);
@@ -90,6 +106,13 @@ void main() async {
       await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/11/11'), findsOneWidget);
+      await expectLater(find.text('22:00'), findsOneWidget);
+      await expectLater(find.text('23:00'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsNWidgets(2));
+      await expectLater(find.text('Test Tag'), findsOneWidget);
+
       // Enter task details in the dialog.
       await tester.enterText(find.byType(TextField).at(0), '2024/12/12');
       await tester.enterText(find.byType(TextField).at(1), '10:00');
@@ -106,6 +129,11 @@ void main() async {
 
       // Update the task.
       await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
       await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
@@ -134,6 +162,11 @@ void main() async {
       await expectLater(deleteButton, findsOneWidget);
 
       await tester.tap(deleteButton);
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Close'));
       await tester.pumpAndSettle();
       await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
@@ -210,6 +243,10 @@ void main() async {
 
       /////////////////////////////////////////////////
       //test data constaints for date and time
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
       await tester.tap(find.text('Add Task'));
       await tester.pumpAndSettle();
@@ -425,11 +462,6 @@ void main() async {
       await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Show All Tasks'));
-      await tester.pumpAndSettle();
-      await Future.delayed(Duration(seconds: 1));
-      await tester.pumpAndSettle();
-
       // Find the ListTile containing the task title 'Test Task2'
       final taskTile5 = await find.widgetWithText(ListTile, 'Test 2');
 
@@ -450,9 +482,22 @@ void main() async {
       await Future.delayed(Duration(seconds: 1));
       await tester.pumpAndSettle();
 
+      await tester.tap(find.text("Show All Tasks"));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
       // Verify that the task is displayed in the list.
       await expectLater(find.text('Test 1'), findsNothing);
       await expectLater(find.text('Test 2'), findsNothing);
+
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+
+
 
 
     });

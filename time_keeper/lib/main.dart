@@ -141,10 +141,14 @@ class _MyHomePageState extends State<MyHomePage> {
     List<QueryDocumentSnapshot> tasks = querySnapshot.docs;
 
     try {
-      var results = ResultsPopup();
-      results.show(context, tasks).then((message) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ResultsPopup(tasks: tasks); // Pass tasks directly
+        },
+      ).then((message) {
         setState(() {
-          _message = message;
+          _message = message ?? ''; // Handle possible null return
           print(_message);
         });
       });
@@ -154,6 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
         print(_message);
       });
     }
+
 
 
 

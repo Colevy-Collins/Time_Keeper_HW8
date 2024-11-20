@@ -94,9 +94,6 @@ class _DataInputPopupState extends State<DataInputPopup> {
       _message = 'Error: $e';
     }
     Navigator.of(context).pop(_message);
-    if (widget.isEdit) {
-      Navigator.of(context).pop();
-    }
   }
 
   @override
@@ -127,6 +124,7 @@ class _DataInputPopupState extends State<DataInputPopup> {
               decoration: InputDecoration(labelText: 'Tag'),
             ),
             Row(
+              key: Key('time-format-row'),
               children: [
                 Radio<bool>(
                   value: false,

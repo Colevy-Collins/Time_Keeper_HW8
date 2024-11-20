@@ -1,29 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_keeper/data_input_pop-up.dart';
-import 'package:time_keeper/validate.dart';
-import 'package:time_keeper/converter.dart';
 
-class ResultsPopup {
 
-  Future<String> _deleteTask(String taskId, context) async {
+class ResultsPopup extends StatefulWidget {
+  List<QueryDocumentSnapshot> tasks;
+
+  ResultsPopup({Key? key, required this.tasks}) : super(key: key);
+
+  @override
+  _ResultsPopupState createState() => _ResultsPopupState();
+}
+
+class _ResultsPopupState extends State<ResultsPopup> {
+  String resultMessage = '';
+
+  Future<void> _deleteTask(String taskId) async {
     String message = '';
     try {
       await FirebaseFirestore.instance.collection('tasks').doc(taskId).delete();
       message = 'Task Deleted Successfully';
-      Navigator.of(context).pop(message); // Close the dialog after deletion
+      setState(() {
+        widget.tasks.removeWhere((task) => task.id == taskId);
+      });
     } catch (e) {
       message = 'Error deleting task: $e';
-      Navigator.of(context).pop(message);
     }
-    return message;
+    if (message.isNotEmpty) {
+      setState(() {
+        resultMessage = message;
+      });
+    }
   }
 
-  Future<String> _editTask(String taskId, Map<String, dynamic> data, context) async {
-    // Pre-fill the controllers with current values
-
-    String results = '';
-    results = await showDialog(
+  Future<void> _editTask(String taskId, Map<String, dynamic> data) async {
+    String results = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return DataInputPopup(
@@ -34,64 +45,64 @@ class ResultsPopup {
         );
       },
     );
-    return results;
+
+    final task1 = await FirebaseFirestore.instance.collection('tasks').get();
+    setState(() {
+      widget.tasks = task1.docs;
+    });
+
+    if (results.isNotEmpty) {
+      setState(() {
+        resultMessage = results;
+      });
+    }
   }
 
-  Future<String> show(BuildContext context, List<QueryDocumentSnapshot> tasks) async {
-    String resultMessage = '';
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('All Tasks'),
+      content: Container(
+        width: 400,
+        child: SingleChildScrollView(
+          child: ListBody(
+            children: widget.tasks.map((task) {
+              Map<String, dynamic> data = task.data() as Map<String, dynamic>;
+              String taskId = task.id;
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('All Tasks'),
-          content: Container(
-            width: 400,
-            child: SingleChildScrollView(
-              child: ListBody(
-                children: tasks.map((task) {
-                  Map<String, dynamic> data = task.data() as Map<String, dynamic>;
-                  String taskId = task.id;
-
-                  return ListTile(
-                    title: Text(data['task'] ?? 'No Task Name'),
-                    subtitle: Text('${data['date']} from ${data['from']} to ${data['to']} with tag ${data['tag']}'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.edit, color: Colors.blue),
-                          onPressed: () async{
-                            resultMessage = await _editTask(taskId, data, context);
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () async{
-                            resultMessage = await _deleteTask(taskId, context);
-
-                          },
-                        ),
-                      ],
+              return ListTile(
+                title: Text(data['task'] ?? 'No Task Name'),
+                subtitle: Text('${data['date']} from ${data['from']} to ${data['to']} with tag ${data['tag']}'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit, color: Colors.blue),
+                      onPressed: () async {
+                        await _editTask(taskId, data);
+                      },
                     ),
-                  );
-                }).toList(),
-              ),
-            ),
+                    IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () async {
+                        await _deleteTask(taskId);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(resultMessage);
+          },
+          child: Text('Close'),
+        ),
+      ],
     );
-
-    return resultMessage;
   }
-
 }
