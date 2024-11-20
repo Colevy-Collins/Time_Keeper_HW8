@@ -21,75 +21,16 @@ class ResultsPopup {
 
   Future<String> _editTask(String taskId, Map<String, dynamic> data, context) async {
     // Pre-fill the controllers with current values
-    final TextEditingController _dateController = TextEditingController();
-    final TextEditingController _fromController = TextEditingController();
-    final TextEditingController _toController = TextEditingController();
-    final TextEditingController _taskController = TextEditingController();
-    final TextEditingController _tagController = TextEditingController();
-
-    _dateController.text = data['date'];
-    _fromController.text = data['from'];
-    _toController.text = data['to'];
-    _taskController.text = data['task'];
-    _tagController.text = data['tag'];
-
-    bool _isAmPm = false;
-    String to_AM_PM = 'AM';
-    String from_AM_PM = 'AM';
 
     String results = '';
-
-    final validator = Validator();
-    final converter = TimeConverter();
     results = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return DataInputPopup(
-          dateController: _dateController,
-          fromController: _fromController,
-          toController: _toController,
-          taskController: _taskController,
-          tagController: _tagController,
-          isAmPm: _isAmPm,
-          fromAMPM: from_AM_PM,
-          toAMPM: to_AM_PM,
-          submitTask: () async {
-            String resultMessage = '';
-            try {
-              String date = validator.getCurrentDateIfToday(
-                  _dateController.text);
-              validator.validateDate(date);
-              _dateController.text = date;
-
-              if (_isAmPm) {
-                validator.validateTimeAmPm(
-                    "${_fromController.text}" + " " + from_AM_PM);
-                validator.validateTimeAmPm(
-                    "${_toController.text}" + " " + to_AM_PM);
-                _fromController.text = converter.convertTo24HourFormat(
-                    _fromController.text, from_AM_PM);
-                _toController.text = converter.convertTo24HourFormat(
-                    _toController.text, to_AM_PM);
-              } else {
-                validator.validateTime(_fromController.text);
-                validator.validateTime(_toController.text);
-              }
-              await FirebaseFirestore.instance.collection('tasks')
-                  .doc(taskId)
-                  .update({
-                'date': _dateController.text,
-                'from': _fromController.text,
-                'to': _toController.text,
-                'task': _taskController.text,
-                'tag': _tagController.text,
-              });
-              resultMessage = 'Task updated successfully.';
-            } catch (e) {
-              resultMessage = 'Error updating task: $e';
-            }
-            Navigator.of(context).pop(resultMessage);
-            Navigator.of(context).pop();
-          },
+          context: context,
+          isEdit: true,
+          data: data,
+          taskId: taskId,
         );
       },
     );

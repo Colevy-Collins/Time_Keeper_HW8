@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:time_keeper/validate.dart';
-import 'package:time_keeper/converter.dart';
 import 'package:time_keeper/data_input_pop-up.dart';
 import 'package:time_keeper/results_pop-up.dart';
 
@@ -40,80 +38,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _fromController = TextEditingController();
-  final TextEditingController _toController = TextEditingController();
-  final TextEditingController _taskController = TextEditingController();
-  final TextEditingController _tagController = TextEditingController();
   final TextEditingController _searchDateController = TextEditingController();
   final TextEditingController _searchTagController = TextEditingController();
   final TextEditingController _searchTaskController = TextEditingController();
-
   String _message = '';
-  bool _isAmPm = false;
-  String to_AM_PM = 'AM';
-  String from_AM_PM = 'AM';
   
-  final validator = Validator();
-  final converter = TimeConverter();
-
-  Future<void> _submitTask() async {
-    try {
-      DocumentReference newTaskRef = FirebaseFirestore.instance.collection('tasks').doc();
-
-      String date = validator.getCurrentDateIfToday(_dateController.text);
-      validator.validateDate(date);
-      _dateController.text = date;
-
-      if (_isAmPm) {
-        validator.validateTimeAmPm("${_fromController.text}" + " " + from_AM_PM);
-        validator.validateTimeAmPm("${_toController.text}" + " " + to_AM_PM);
-        _fromController.text = converter.convertTo24HourFormat(_fromController.text, from_AM_PM);
-        _toController.text = converter.convertTo24HourFormat(_toController.text, to_AM_PM);
-      } else {
-        validator.validateTime(_fromController.text);
-        validator.validateTime(_toController.text);
-      }
-
-
-      await newTaskRef.set({
-        'date': _dateController.text,
-        'from': _fromController.text,
-        'to': _toController.text,
-        'task': _taskController.text,
-        'tag': _tagController.text,
-      });
-
-      setState(() {
-        _message = 'Task submitted: ${_taskController.text} from ${_fromController.text} to ${_toController.text} on ${_dateController.text} with tag ${_tagController.text}.';
-        print(_message);
-      });
-    } catch (e) {
-      setState(() {
-        _message = 'Error: $e';
-        print(_message);
-      });
-    }
-    Navigator.of(context).pop();
-  }
 
   Future<void> _showSubmitBox() async {
-    showDialog(
+    String results = '';
+    results = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return DataInputPopup(
-          dateController: _dateController,
-          fromController: _fromController,
-          toController: _toController,
-          taskController: _taskController,
-          tagController: _tagController,
-          isAmPm: _isAmPm,
-          fromAMPM: from_AM_PM,
-          toAMPM: to_AM_PM,
-          submitTask: _submitTask,
+          context: context,
+          isEdit: false,
+          data: {},
         );
       },
     );
+    setState(() {
+      _message = results;
+      print(_message);
+    });
   }
 
   Future<void> _searchTasks() async {

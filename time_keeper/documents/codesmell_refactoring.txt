@@ -12,3 +12,5 @@ Code Smell 6: _MyHomePageState is a long class.
     Refactoring: Extract the db functions class.
 Code Smell 7: Duplicate code used to get results
     Refactoring: consolidate code.
+Code smell 8: DataInputPopup has feature envy.
+    Refactoring: move needed features to DataInputPopup.
