@@ -4,6 +4,8 @@ import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_keeper/data_input_pop-up.dart';
 import 'package:time_keeper/results_pop-up.dart';
+import 'package:time_keeper/report_handler.dart';
+import 'package:intl/intl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,8 +43,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _searchDateController = TextEditingController();
   final TextEditingController _searchTagController = TextEditingController();
   final TextEditingController _searchTaskController = TextEditingController();
+  final reports = ReportHandler();
+
+
   String _message = '';
-  
 
   Future<void> _showSubmitBox() async {
     String results = '';
@@ -170,6 +174,202 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+  Future<void> _dateRangeReport(BuildContext context) async {
+    final TextEditingController _startDateController = TextEditingController();
+    final TextEditingController _endDateController = TextEditingController();
+    String startDate = '';
+    String endDate = '';
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Date Range Report'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    DateTime? selectedStartDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
+                    if (selectedStartDate != null) {
+                      startDate = DateFormat('yyyy/MM/dd').format(selectedStartDate);
+                      _startDateController.text = startDate;
+                    } else {
+                      setState(() {
+                        _message = 'Please select start dates';
+                        print(_message);
+                      });
+                    }
+                  },
+                  child: Text('Select Start Date'),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _startDateController,
+                  readOnly: true,
+                  decoration: InputDecoration(labelText: 'Start Date'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    DateTime? selectedEndDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
+                    if (selectedEndDate != null) {
+                      endDate = DateFormat('yyyy/MM/dd').format(selectedEndDate);
+                      _endDateController.text = endDate;
+                    } else {
+                      setState(() {
+                        _message = 'Please select end dates';
+                        print(_message);
+                      });
+                    }
+                  },
+                  child: Text('Select End Date'),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _endDateController,
+                  readOnly: true,
+                  decoration: InputDecoration(labelText: 'End Date'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (startDate.isNotEmpty && endDate.isNotEmpty) {
+                  List<QueryDocumentSnapshot> tasks = await reports.getDateRangeReport(startDate, endDate);
+
+                  try {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ResultsPopup(tasks: tasks); // Pass tasks directly
+                      },
+                    ).then((message) {
+                      setState(() {
+                        _message = message ?? ''; // Handle possible null return
+                        print(_message);
+                      });
+                    });
+                  } catch (e) {
+                    setState(() {
+                      _message = 'Error: $e';
+                      print(_message);
+                    });
+                  }
+                } else {
+                  // Optionally show an error message
+                  setState(() {
+                    _message = 'Please select both start and end dates';
+                    print(_message);
+                  });
+                }
+              },
+              child: Text('Generate Report'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _timeSpentReport() async {
+    try {
+      Map<String, dynamic> timeSpentReport = await reports.getTimeSpentReport();
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+
+            title: Text('Time Spent Report'),
+            content: SingleChildScrollView(
+              child: Column(
+                children: timeSpentReport.entries.map((entry) {
+                  return ListTile(
+                    title: Text(entry.key),
+                    subtitle: Text('${entry.value}'),
+                  );
+                }).toList(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      setState(() {
+        _message = 'Error generating time spent report: $e';
+        print(_message);
+      });
+    }
+  }
+
+
+  Future<void> _reports() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Reports'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement date range report logic here
+                    _dateRangeReport(context);
+                  },
+                  child: Text('Date Range Report'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement time spent report logic here
+                    _timeSpentReport();
+                  },
+                  child: Text('Time Spent Report'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,6 +398,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 _searchTasks();
               },
               child: Text('Search Tasks'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _reports();
+              },
+              child: Text('Reports'),
             ),
             SizedBox(height: 20),
             Text(_message, key: const Key('message')),
