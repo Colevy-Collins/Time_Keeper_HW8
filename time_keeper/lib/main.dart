@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Select Start Date'),
                 ),
                 SizedBox(height: 10),
-                TextField(
+                TextFormField(
                   controller: _startDateController,
                   readOnly: true,
                   decoration: InputDecoration(labelText: 'Start Date'),
@@ -236,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Select End Date'),
                 ),
                 SizedBox(height: 10),
-                TextField(
+                TextFormField(
                   controller: _endDateController,
                   readOnly: true,
                   decoration: InputDecoration(labelText: 'End Date'),
@@ -362,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: Text('Exit'),
             ),
           ],
         );

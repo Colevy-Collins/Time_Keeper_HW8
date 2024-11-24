@@ -497,8 +497,249 @@ void main() async {
       await tester.pumpAndSettle();
 
 
+      /////////////////////////////////////////////////////
+      //Test reports
 
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
 
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/11/01');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/11/01'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsOneWidget);
+      await expectLater(find.text('Test Tag'), findsOneWidget);
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/11/02');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/11/02'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsOneWidget);
+      await expectLater(find.text('Test Tag'), findsOneWidget);
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/11/03');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/11/03'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsOneWidget);
+      await expectLater(find.text('Test Tag'), findsOneWidget);
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/11/04');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/11/04'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsOneWidget);
+      await expectLater(find.text('Test Tag'), findsOneWidget);
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/10/01');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/10/01'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsOneWidget);
+      await expectLater(find.text('Test Tag'), findsOneWidget);
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Add Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      // Verify that the dialog is displayed.
+      await expectLater(find.text('Submit Task'), findsOneWidget);
+
+      // Enter task details in the dialog.
+      await tester.enterText(find.byType(TextField).at(0), '2024/12/01');
+      await tester.enterText(find.byType(TextField).at(1), '10:00');
+      await tester.enterText(find.byType(TextField).at(2), '11:00');
+      await tester.enterText(find.byType(TextField).at(3), 'Test Task');
+      await tester.enterText(find.byType(TextField).at(4), 'Test Tag');
+
+      // Verify that the task details are entered.
+      await expectLater(find.text('2024/12/01'), findsOneWidget);
+      await expectLater(find.text('10:00'), findsOneWidget);
+      await expectLater(find.text('11:00'), findsOneWidget);
+      await expectLater(find.text('Test Task'), findsOneWidget);
+      await expectLater(find.text('Test Tag'), findsOneWidget);
+
+      // Submit the task.
+      await tester.tap(find.text('Submit Task'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Reports'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Date Range Report'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Select Start Date'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('Switch to input'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byWidgetPredicate(
+            (widget) => widget is TextField && widget.readOnly != true,
+      ), '11/01/2024');
+
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Select End Date'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('Switch to input'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byWidgetPredicate(
+            (widget) => widget is TextField && widget.readOnly != true,
+      ), '11/03/2024');
+
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Generate Report'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await expectLater(find.text('Test Task'), findsNWidgets(3));
+
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Time Spent Report'));
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(seconds: 1));
+      await tester.pumpAndSettle();
+
+      String testString = find.text('6 hours and 0 minutes (360 minutes total)').toString();
+      await expectLater(testString.contains("6 hours and 0 minutes (360 minutes total)"), isTrue);
 
     });
   });
