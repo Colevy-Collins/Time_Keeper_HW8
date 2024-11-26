@@ -44,24 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _searchTagController = TextEditingController();
   final TextEditingController _searchTaskController = TextEditingController();
   final reports = ReportHandler();
-
-
   String _message = '';
 
-  Future<void> _showSubmitBox() async {
-    String results = '';
-    results = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return DataInputPopup(
-          context: context,
-          isEdit: false,
-          data: {},
-        );
-      },
-    );
+  void _setMessage(String message) {
     setState(() {
-      _message = results;
+      _message = message;
       print(_message);
     });
   }
@@ -201,10 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       startDate = DateFormat('yyyy/MM/dd').format(selectedStartDate);
                       _startDateController.text = startDate;
                     } else {
-                      setState(() {
-                        _message = 'Please select start dates';
-                        print(_message);
-                      });
+                      _setMessage('Please select start dates');
                     }
                   },
                   child: Text('Select Start Date'),
@@ -227,10 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       endDate = DateFormat('yyyy/MM/dd').format(selectedEndDate);
                       _endDateController.text = endDate;
                     } else {
-                      setState(() {
-                        _message = 'Please select end dates';
-                        print(_message);
-                      });
+                      _setMessage("Please select end dates");
                     }
                   },
                   child: Text('Select End Date'),
@@ -263,23 +244,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         return ResultsPopup(tasks: tasks); // Pass tasks directly
                       },
                     ).then((message) {
-                      setState(() {
-                        _message = message ?? ''; // Handle possible null return
-                        print(_message);
-                      });
+                      _setMessage(message);
                     });
                   } catch (e) {
-                    setState(() {
-                      _message = 'Error: $e';
-                      print(_message);
-                    });
+                    _setMessage('Error: $e');
                   }
                 } else {
                   // Optionally show an error message
-                  setState(() {
-                    _message = 'Please select both start and end dates';
-                    print(_message);
-                  });
+                  _setMessage('Please select both start and end dates');
                 }
               },
               child: Text('Generate Report'),
@@ -322,13 +294,9 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       );
     } catch (e) {
-      setState(() {
-        _message = 'Error generating time spent report: $e';
-        print(_message);
-      });
+      _setMessage('Error generating time spent report: $e');
     }
   }
-
 
   Future<void> _reports() async {
     showDialog(
@@ -382,8 +350,19 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                _showSubmitBox();
+              onPressed: () async {
+                String results = '';
+                results = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DataInputPopup(
+                      context: context,
+                      isEdit: false,
+                      data: {},
+                    );
+                  },
+                );
+                _setMessage(results);
               },
               child: Text('Add Task'),
             ),

@@ -14,3 +14,7 @@ Code Smell 7: Duplicate code used to get results
     Refactoring: consolidate code.
 Code smell 8: DataInputPopup has feature envy.
     Refactoring: move needed features to DataInputPopup.
+Code Smell 9: _showSubmitDialog is a useless method.
+    Refactoring: replace method call with the method body.
+Code Smell 10: setState code is duplicated manh times to display a message.
+    Refactoring: Extract a method to reduce duplication.
