@@ -1,0 +1,8 @@
+Design Pattern 1 - Strategy:
+I implement the Strategy design pattern to dynamically select which report to generate at runtime, providing flexibility and separation of concerns.
+
+Design Pattern 2 - Chain of Responsibility:
+I utilize the Chain of Responsibility design pattern to propagate messages to the main class, ensuring they are displayed on the main UI screen seamlessly.
+
+Design Pattern 3 - Mediator:
+I apply the Mediator design pattern through the _MyHomePageState class, which coordinates actions and centralizes logic. This allows individual classes to focus only on their specific responsibilities without needing to know about the broader system.

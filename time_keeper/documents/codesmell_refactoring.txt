@@ -1,20 +1,29 @@
-Code Smell 1: _MyHomePageState is a God class.
-    Refactoring: Extract the validator class.
+Code Smell 1: _MyHomePageState is a God Class.
+Refactoring: Apply the Extract Class pattern to create a Validator class, delegating validation logic and reducing the burden on _MyHomePageState.
+
 Code Smell 2: _MyHomePageState is a long class.
-    Refactoring: Extract the converter class.
-Code Smell 3: _MyHomePageState is a has duplicate code and is a complex class.
-    Refactoring: Extract a AlertDialog class.
-Code Smell 4: Build is a long method.
-    Refactoring: Extract all AlertDialogs.
-Code Smell 5: Duplicate code used to display results
-    Refactoring: Extract a Result class.
+Refactoring: Use the Extract Class pattern to create a Converter class, encapsulating data conversion logic to improve modularity.
+
+Code Smell 3: _MyHomePageState has duplicate code and is overly complex.
+Refactoring: Apply the Extract Class pattern to create a dedicated AlertDialogHandler class for managing all dialog-related logic.
+
+Code Smell 4: The build method is excessively long.
+Refactoring: Use the Extract Method pattern to separate all AlertDialog creation logic into dedicated helper methods, improving readability.
+
+Code Smell 5: Duplicate code is used to display results.
+Refactoring: Apply the Extract Class pattern to create a ResultsDisplay class, consolidating the logic for rendering results.
+
 Code Smell 6: _MyHomePageState is a long class.
-    Refactoring: Extract the db functions class.
-Code Smell 7: Duplicate code used to get results
-    Refactoring: consolidate code.
-Code smell 8: DataInputPopup has feature envy.
-    Refactoring: move needed features to DataInputPopup.
-Code Smell 9: _showSubmitDialog is a useless method.
-    Refactoring: replace method call with the method body.
-Code Smell 10: setState code is duplicated manh times to display a message.
-    Refactoring: Extract a method to reduce duplication.
+Refactoring: Use the Extract Class pattern to create a DatabaseFunctions class, moving all database interaction logic into its own module.
+
+Code Smell 7: Duplicate code is used to fetch results.
+Refactoring: Apply the Consolidate Duplicate Conditional Fragments pattern to unify repeated logic for retrieving results.
+
+Code Smell 8: DataInputPopup exhibits Feature Envy, relying heavily on other class data.
+Refactoring: Apply the Move Method pattern to transfer the necessary logic and features directly to DataInputPopup, ensuring better cohesion.
+
+Code Smell 9: _showSubmitDialog is an unnecessary method.
+Refactoring: Use the Inline Method pattern to replace the method call with its body, eliminating the redundant method.
+
+Code Smell 10: setState code is duplicated multiple times to display messages.
+Refactoring: Use the Extract Method pattern to create a reusable method for setting and displaying messages, reducing duplication.
