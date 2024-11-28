@@ -73,3 +73,5 @@ flutter test integration_test/app_test.dart
 This will run a test the simulate a user doing several actions with the app.
 You will see the app function on your screen as the test runs.
 Once done, you will see the results of the test.
+
+Note: The test can fail do to connections to FirBase or loading issues. 
