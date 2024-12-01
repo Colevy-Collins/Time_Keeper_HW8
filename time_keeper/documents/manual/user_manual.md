@@ -1,77 +1,96 @@
-Project Description
-===================
-In this project you will find a time keeping app were you can add time entries with 
-a date, from, to, task name, and task tag. From is the time you started the task and to is 
-the time you finished the task. The task name is the name of the task you are working on and tag
-is the classification you assign to the tag for grouping purposes. You can also view ,edit ,and delete
-time entries. The app also allows you to search for tasks using a date, task name or a list of tags 
-with each tag be search for separated by a comma. Finally, you can generate reports. One report
-you can generate is a date range report, where you select two dates and every task done between those
-date is displayed. The other report you can generate is a time spent report, where you will see the
-hours, minutes and the total minutes spend doing each kind of task grouped by the tags on the tasks.
+# User Manual
 
-How to use
-==========
-Adding a time entry:
---------------------
-Step 1: Click on the "Add Task" button.
-Step 2: Fill in the date, from, to, task name, and tag fields.
-Note: The date must be in the format yyyy/mm/dd, the from and to fields must be in the format hh:mm
-You are able to enter today in the date field to automatically fill in the current date.
-You can use 24 based time or AM/PM time. If you use AM/PM time, you must utilize the proper buttons at 
-the bottom of the form. The time will be converted to 24 when you click the "Add Task" button.
-Step 3: Click on the "Add Task" button.
+# **Time Keeping App User Manual**
 
-Viewing time entries:
----------------------
-Step 1: Click on the "Show All Task" button.
-This will display all the time entries in the database.
-Alternatively you can search for tasks. To search follow these steps:
-Step 1: Click on the "Search Task" button.
-Step 2: Fill in the date, task name, and tag fields.
-Note: The date must be in the format yyyy/mm/dd. All times are in 24 based time.
-You can enter a list of tags separated by a comma. (e.g. tag1,tag2,tag3)
-Step 3: Click on the "Search Task" button.
+## **Project Description**
 
-Editing a time entry:
----------------------
-Step 1: Click on the "Show All Task" button.
-Step 2: Click on the "Edit" button of the task you want to edit.
-Step 3: Change the fields you want to edit.
-Note: The date must be in the format yyyy/mm/dd, the from and to fields must be in the format hh:mm
-All fields must be filled in, if you do not wish to change a field, do not edit the current data which
-will be filled in.
+The Time Keeping App is designed to help users track their tasks with ease. It allows you to:
 
-Deleting a time entry:
-----------------------
-Step 1: Click on the "Show All Task" button.
-Step 2: Click on the "Delete" button of the task you want to delete.
+- **Add time entries** with details such as date, start time ("From"), end time ("To"), task name, and task tag for classification.
+- **View, edit, or delete** existing time entries.
+- **Search tasks** by date, task name, or a list of tags separated by commas.
+- **Generate reports** to review task details:
+    - **Date Range Report:** Displays tasks completed within a specified date range.
+    - **Time Spent Report:** Summarizes time spent on tasks, grouped by tags.
 
-Generating a Date Range Report:
---------------------
-Step 1: Click on the "Reports" button.
-Step 2: Click on the "Date Range Report" button.
-Step 3: Click on the "Select Start Date" button.
-Step 4: Use date picker to select start date and click "OK".
-Step 5: Click on the "Select End Date" button.
-Step 6: Use date picker to select end date and click "OK".
-Step 7: Click on the "Generate Report" button.
+## **How to Use the App**
 
-Generating a Time Spent Report:
---------------------
-Step 1: Click on the "Reports" button.
-Step 2: Click on the "Time Spent Report" button.
+### **1. Adding a Time Entry**
 
-Testing 
-=======
-Note: This project uses the integration test package to test the project with a live 
-firebase connection.
+1. Click the **"Add Task"** button.
+2. Fill in the following fields:
+    - **Date:** Enter in `yyyy/mm/dd` format or type "today" for the current date.
+    - **From:** Enter the start time in `hh:mm` format (24-hour or AM/PM time).
+    - **To:** Enter the end time in `hh:mm` format (24-hour or AM/PM time).
+    - **Task Name:** Provide a brief description of the task.
+    - **Tag:** Assign a classification tag (e.g., "Work," "Personal").
+3. If using AM/PM time, select the appropriate AM/PM button.
+4. Click the **"Add Task"** button to save the entry.
 
-To run the tests, use the following command:
-flutter test integration_test/app_test.dart
+### **2. Viewing Time Entries**
 
-This will run a test the simulate a user doing several actions with the app.
-You will see the app function on your screen as the test runs.
-Once done, you will see the results of the test.
+- To view all tasks:
+    1. Click the **"Show All Task"** button.
+- To search for specific tasks:
+    1. Click the **"Search Task"** button.
+    2. Enter search criteria:
+        - **Date:** In `yyyy/mm/dd` format.
+        - **Task Name:** Partial or full task name.
+        - **Tag:** Enter tags separated by commas (e.g., "tag1,tag2,tag3").
+    3. Click the **"Search Task"** button.
 
-Note: The test can fail do to connections to FirBase or loading issues. 
+### **3. Editing a Time Entry**
+
+1. Click the **"Show All Task"** button to view existing entries.
+2. Locate the task to be edited and click its **"Edit"** button.
+3. Update desired fields. Ensure all fields are filled.
+    - If no changes are needed for a field, leave it unchanged.
+4. Save the updated entry.
+
+### **4. Deleting a Time Entry**
+
+1. Click the **"Show All Task"** button.
+2. Locate the task to be removed and click its **"Delete"** button.
+
+### **5. Generating Reports**
+
+### **A. Date Range Report**
+
+1. Click the **"Reports"** button.
+2. Select the **"Date Range Report"** option.
+3. Choose the start and end dates:
+    - Click **"Select Start Date"** and pick a date using the date picker.
+    - Click **"Select End Date"** and pick a date using the date picker.
+4. Click **"Generate Report"** to view tasks within the selected range.
+
+### **B. Time Spent Report**
+
+1. Click the **"Reports"** button.
+2. Select the **"Time Spent Report"** option.
+3. View the report, which includes:
+    - Hours and minutes spent on each task type.
+    - Total time grouped by tags.
+
+## **Testing the App**
+
+The app includes integration tests to ensure its reliability. Tests simulate user actions using a live Firebase connection.
+
+### **Running Tests**
+
+1. Run the following command in your terminal:
+    
+    ```
+    flutter test integration_test/app_test.dart
+    
+    ```
+    
+2. Observe the app as it performs simulated actions.
+3. Review the test results upon completion.
+
+**Note:** Test failures may occur due to Firebase connection or loading issues.
+
+## **Additional Notes**
+
+- All times are converted to 24-hour format upon saving.
+- Date and time validations are enforced during input.
+- Ensure proper internet connectivity for Firebase features.
